@@ -8,40 +8,59 @@
     body {
       margin: 0;
       height: 100vh;
-      background: url('https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1920&q=80') no-repeat center center/cover;
+      background: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1920&q=80') no-repeat center center/cover;
       font-family: "Segoe UI", sans-serif;
       display: flex;
       justify-content: center;
       align-items: center;
     }
+
     .container {
       background: rgba(255, 255, 255, 0.15);
       backdrop-filter: blur(15px);
-      border-radius: 20px;
-      padding: 40px;
-      width: 80%;
-      max-width: 1000px;
+      border-radius: 30px;
+      padding: 60px 40px;
+      width: 85%;
+      max-width: 1200px;
+      min-height: 300px;
       text-align: center;
       color: #000;
       box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
+
     h1 {
-      font-size: 2rem;
+      font-size: 2.4rem;
       font-weight: bold;
-      margin-bottom: 30px;
+      margin-bottom: 40px;
     }
+
     input {
-      padding: 12px 20px;
-      width: 50%;
+      padding: 14px 25px;
+      width: 60%;
       border: none;
-      border-radius: 30px;
+      border-radius: 40px;
       outline: none;
-      font-size: 1rem;
+      font-size: 1.1rem;
       text-align: center;
-      background: rgba(255,255,255,0.4);
+      background: rgba(255,255,255,0.5);
     }
+
     input::placeholder {
       color: #333;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        width: 90%;
+        padding: 40px 20px;
+      }
+
+      input {
+        width: 80%;
+      }
     }
   </style>
 </head>
