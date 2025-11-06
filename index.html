@@ -148,7 +148,7 @@
   <script>
   const apiKey = "AIzaSyAm9GUoXd08liA24UxEnC78jYJmMW0ZCPw";
   const sheetId = "1DlXG_E_xbrr1k9GJKRO3iRHT3BEtMu3RDNhse5CcafA";
-  const range = "DATA!A2:M"; // Tab name must be exactly "DATA"
+  const range = "DATA!A2:M";
 
   const input = document.getElementById("referrerInput");
   const statusBox = document.getElementById("statusBox");
@@ -158,7 +158,7 @@
     if (!name) return;
 
     const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${range}?key=${apiKey}`;
-    console.log("Fetching from:", url); // Debug line
+    console.log("Fetching from:", url);
 
     statusBox.textContent = "Fetching status...";
     statusBox.style.display = "block";
@@ -172,8 +172,8 @@
       }
 
       const rows = data.values;
-      const match = rows.find(row => row[1]?.toLowerCase() === name); // Column B = Referrer Name
-      const status = match ? match[12] : "No record found"; // Column M = Status
+      const match = rows.find(row => row[1]?.toLowerCase() === name);
+      const status = match ? match[12] : "No record found";
 
       statusBox.textContent = `Status: ${status}`;
     } catch (err) {
@@ -181,11 +181,6 @@
       console.error("Fetch error:", err);
     }
   });
-</script>
-
-      }
-    });
   </script>
 </body>
 </html>
-
