@@ -5,27 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Referred Case Status</title>
   <style>
-    /* Keyframes for entrance animations */
     @keyframes fadeScale {
-      0% {
-        opacity: 0;
-        transform: scale(0.8);
-      }
-      100% {
-        opacity: 1;
-        transform: scale(1);
-      }
+      0% { opacity: 0; transform: scale(0.8); }
+      100% { opacity: 1; transform: scale(1); }
     }
 
     @keyframes slideUp {
-      0% {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      100% {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      0% { opacity: 0; transform: translateY(30px); }
+      100% { opacity: 1; transform: translateY(0); }
     }
 
     body {
@@ -124,6 +111,17 @@
       text-align: center;
     }
 
+    .status-box {
+      margin-top: 30px;
+      font-size: 1.2rem;
+      color: #333;
+      background: rgba(255, 255, 255, 0.6);
+      padding: 15px 25px;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      animation: fadeScale 0.5s ease-out;
+    }
+
     @media (max-width: 600px) {
       .container {
         width: 90%;
@@ -143,7 +141,41 @@
       <img src="KK.png" alt="Kaar-e-Kamal Logo" class="logo" />
     </div>
     <h1>Referred Case Status</h1>
-    <input type="text" placeholder="Enter The Referrer’s Name..." />
+    <input type="text" id="referrerInput" placeholder="Enter The Referrer’s Name..." />
+    <div id="statusBox" class="status-box" style="display: none;"></div>
   </div>
+
+  <script>
+    const apiKey = "AIzaSyAm9GUoXd08liA24UxEnC78jYJmMW0ZCPw";
+    const sheetId = "2PACX-1vRpHviU2_bX5VZvrHn-mIf0cfJ8voWGoj4nuSCIEjEusvSU5BDMHq1PlhASxpQpdEUkgCphRflUyLhx";
+    const range = "Sheet1!A2:M"; // Assuming headers are in row 1
+
+    const input = document.getElementById("referrerInput");
+    const statusBox = document.getElementById("statusBox");
+
+    input.addEventListener("change", async () => {
+      const name = input.value.trim().toLowerCase();
+      if (!name) return;
+
+      const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${range}?key=${apiKey}`;
+
+      try {
+        const res = await fetch(url);
+        const data = await res.json();
+        const rows = data.values;
+
+        const match = rows.find(row => row[1]?.toLowerCase() === name); // Column B = Referrer Name
+        const status = match ? match[12] : "No record found"; // Column M = Status
+
+        statusBox.textContent = `Status: ${status}`;
+        statusBox.style.display = "block";
+      } catch (err) {
+        statusBox.textContent = "Error fetching status. Please try again.";
+        statusBox.style.display = "block";
+        console.error(err);
+      }
+    });
+  </script>
 </body>
 </html>
+
