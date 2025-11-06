@@ -146,34 +146,43 @@
   </div>
 
   <script>
-    const apiKey = "AIzaSyAm9GUoXd08liA24UxEnC78jYJmMW0ZCPw";
-    const sheetId = "1DlXG_E_xbrr1k9GJKRO3iRHT3BEtMu3RDNhse5CcafA";
+  const apiKey = "AIzaSyAm9GUoXd08liA24UxEnC78jYJmMW0ZCPw";
+  const sheetId = "1DlXG_E_xbrr1k9GJKRO3iRHT3BEtMu3RDNhse5CcafA";
+  const range = "DATA!A2:M"; // Tab name must be exactly "DATA"
 
-    const range = "DATA!A2:M"; // Assuming headers are in row 1
+  const input = document.getElementById("referrerInput");
+  const statusBox = document.getElementById("statusBox");
 
-    const input = document.getElementById("referrerInput");
-    const statusBox = document.getElementById("statusBox");
+  input.addEventListener("change", async () => {
+    const name = input.value.trim().toLowerCase();
+    if (!name) return;
 
-    input.addEventListener("change", async () => {
-      const name = input.value.trim().toLowerCase();
-      if (!name) return;
+    const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${range}?key=${apiKey}`;
+    console.log("Fetching from:", url); // Debug line
 
-      const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${range}?key=${apiKey}`;
+    statusBox.textContent = "Fetching status...";
+    statusBox.style.display = "block";
 
-      try {
-        const res = await fetch(url);
-        const data = await res.json();
-        const rows = data.values;
+    try {
+      const res = await fetch(url);
+      const data = await res.json();
 
-        const match = rows.find(row => row[1]?.toLowerCase() === name); // Column B = Referrer Name
-        const status = match ? match[12] : "No record found"; // Column M = Status
+      if (!data.values) {
+        throw new Error("No data returned");
+      }
 
-        statusBox.textContent = `Status: ${status}`;
-        statusBox.style.display = "block";
-      } catch (err) {
-        statusBox.textContent = "Error fetching status. Please try again.";
-        statusBox.style.display = "block";
-        console.error(err);
+      const rows = data.values;
+      const match = rows.find(row => row[1]?.toLowerCase() === name); // Column B = Referrer Name
+      const status = match ? match[12] : "No record found"; // Column M = Status
+
+      statusBox.textContent = `Status: ${status}`;
+    } catch (err) {
+      statusBox.textContent = "Error fetching status. Please check sheet access or tab name.";
+      console.error("Fetch error:", err);
+    }
+  });
+</script>
+
       }
     });
   </script>
