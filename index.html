@@ -145,42 +145,40 @@
     <div id="statusBox" class="status-box" style="display: none;"></div>
   </div>
 
-  <script>
-  const apiKey = "AIzaSyAm9GUoXd08liA24UxEnC78jYJmMW0ZCPw";
-  const sheetId = "1DlXG_E_xbrr1k9GJKRO3iRHT3BEtMu3RDNhse5CcafA";
-  const range = "DATA!A2:M";
+<script>
+const apiKey = "AIzaSyAm9GUoXd08liA24UxEnC78jYJmMW0ZCPw";
+const sheetId = "1DlXG_E_xbrr1k9GJKRO3iRHT3BEtMu3RDNhse5CcafA";
+const range = "DATA!A2:M";
 
-  const input = document.getElementById("referrerInput");
-  const statusBox = document.getElementById("statusBox");
+const input = document.getElementById("referrerInput");
+const statusBox = document.getElementById("statusBox");
 
-  input.addEventListener("change", async () => {
-    const name = input.value.trim().toLowerCase();
-    if (!name) return;
+input.addEventListener("change", async () => {
+  const name = input.value.trim().toLowerCase();
+  if (!name) return;
 
-    const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${range}?key=${apiKey}`;
-    console.log("Fetching from:", url);
+  const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${range}?key=${apiKey}`;
+  console.log("Fetching from:", url);
 
-    statusBox.textContent = "Fetching status...";
-    statusBox.style.display = "block";
+  statusBox.textContent = "Fetching status...";
+  statusBox.style.display = "block";
 
-    try {
-      const res = await fetch(url);
-      const data = await res.json();
+  try {
+    const res = await fetch(url);
+    const data = await res.json();
 
-      if (!data.values) {
-        throw new Error("No data returned");
-      }
+    if (!data.values) throw new Error("No data returned");
 
-      const rows = data.values;
-      const match = rows.find(row => row[1]?.toLowerCase() === name);
-      const status = match ? match[12] : "No record found";
+    const rows = data.values;
+    const match = rows.find(row => row[1] && row[1].toLowerCase().includes(name));
+    const status = match ? (match[12] || "No status found") : "No record found";
 
-      statusBox.textContent = `Status: ${status}`;
-    } catch (err) {
-      statusBox.textContent = "Error Fetching Status. Please Check Sheet Access Or Tab Name.";
-      console.error("Fetch error:", err);
-    }
-  });
-  </script>
+    statusBox.textContent = `Status: ${status}`;
+  } catch (err) {
+    statusBox.textContent = "Error Fetching Status. Please Check Sheet Access Or Tab Name.";
+    console.error("Fetch error:", err);
+  }
+});
+</script>
 </body>
 </html>
