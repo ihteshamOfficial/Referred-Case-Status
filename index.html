@@ -34,13 +34,13 @@
     }
 
     .logo {
-      width: 130px;
-      height: 130px;
+      width: 140px;
+      height: 140px;
       margin-bottom: 30px;
-      border-radius: 50%;              /* Keeps logo perfectly round */
-      object-fit: contain;             /* Ensures full logo fits inside */
-      background-color: #fff;          /* Clean white circle behind logo */
-      padding: 10px;                   /* Gives breathing space to logo */
+      border-radius: 50%;
+      object-fit: contain;  /* ensures full logo fits inside circle */
+      background-color: white; /* optional background */
+      padding: 10px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
     }
 
@@ -80,7 +80,6 @@
         width: 100px;
         height: 100px;
         margin-bottom: 20px;
-        padding: 8px;
       }
       h1 {
         font-size: 1.6rem;
@@ -90,8 +89,7 @@
 </head>
 <body>
   <div class="container">
-    <!-- Same Base64 logo image -->
-    <img src="data:image/png;base64,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" alt="Kaar-e-Kamal Logo" class="logo" />
+    <img src="download.png" alt="Kaar-e-Kamal Logo" class="logo" />
     <h1>Referred Case Status</h1>
     <input type="text" placeholder="Enter The Referrer’s Name..." />
   </div>
